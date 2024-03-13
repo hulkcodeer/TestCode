@@ -1,16 +1,6 @@
 # 신의 훈수 TEST CODE
 
-//
-//  godsadviceTests.swift
-//  godsadviceTests
-//
-//  Created by Hyun Jin Park on 2023/11/16.
-//
-
-import XCTest
-import Combine
-@testable import godsadvice
-
+# MockMyPageAPI 설정
 class MockMyPageAPI: MyPageAPI {
     var myPageInfoPublisher: AnyPublisher<MyPageModel, APIError>
     var myPageHistoryMetaInfoPublisher: AnyPublisher<MyPageHistoryMetaModel, APIError>
@@ -30,6 +20,7 @@ class MockMyPageAPI: MyPageAPI {
     }
 }
 
+# MockMyPageAPI TEST CODE
 class MyPageViewBlocTests: XCTestCase {
     var bloc: MyPageViewBloc!
     var mockAPI: MockMyPageAPI!
@@ -37,12 +28,12 @@ class MyPageViewBlocTests: XCTestCase {
 
     override func setUpWithError() throws {
         super.setUp()
-                
-        let myPageInfoPublisher = Just(MyPageModel())
+        // Given: 테스트 환경 설정
+        let myPageInfoPublisher = Just(MyPageModel(/* 적절한 테스트 데이터로 초기화 */))
             .setFailureType(to: APIError.self)
             .eraseToAnyPublisher()
         
-        let myPageHistoryMetaInfoPublisher = Just(MyPageHistoryMetaModel())
+        let myPageHistoryMetaInfoPublisher = Just(MyPageHistoryMetaModel(/* 적절한 테스트 데이터로 초기화 */))
             .setFailureType(to: APIError.self)
             .eraseToAnyPublisher()
         
@@ -60,18 +51,21 @@ class MyPageViewBlocTests: XCTestCase {
     }
 
     func testFetchMyPageInfoUpdatesState() {
+        // Given: 테스트 상태 설정
         let expectation = XCTestExpectation(description: "State should be updated")
 
+        // When: 이벤트 실행
+        bloc.event(.fetchMyPageInfo)
+
+        // Then: 결과 검증
         bloc.$state
             .sink { state in
                 if state.displayProfileImgUrl != "" {
-                    expectation.fulfill()
+                    expectation.fulfill()  // 예상된 상태 업데이트가 발생하면 테스트를 성공적으로 마침
                 }
             }
             .store(in: &cancelables)
-        
-        bloc.event(.fetchMyPageInfo)
-        
-        wait(for: [expectation], timeout: 5.0)
+
+        wait(for: [expectation], timeout: 5.0)  // 비동기 작업의 완료를 대기
     }
 }
