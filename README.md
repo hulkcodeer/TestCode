@@ -1,9 +1,9 @@
 # 신의 훈수 TEST CODE
-# 테스트 코드 설계
-# ViewModel 관련 로직만 작성
-# Mock API설정을 테스트 코드 단계에서 할지?...아니면 클래스에서 제공할지 고민중...
-# Mock 데이터는 실제 JSON을 담을지, 내가 지정한 데이터를 담을지도 고민중...
-# Repository단계 테스트가 필요할까?...
+테스트 코드 설계<br>
+ViewModel 관련 로직만 작성<br>
+Mock API설정을 테스트 코드 단계에서 할지?...아니면 클래스에서 제공할지 고민중...<br>
+Mock 데이터는 실제 JSON을 담을지, 내가 지정한 데이터를 담을지도 고민중...<br>
+Repository단계 테스트가 필요할까?...<br>
 
 # MockMyPageAPI 설정
 ```swift
