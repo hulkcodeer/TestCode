@@ -1,6 +1,12 @@
 # 신의 훈수 TEST CODE
+# 테스트 코드 설계
+# ViewModel 관련 로직만 작성
+# Mock API설정을 테스트 코드 단계에서 할지?...아니면 클래스에서 제공할지 고민중...
+# Mock 데이터는 실제 JSON을 담을지, 내가 지정한 데이터를 담을지도 고민중...
+# Repository단계 테스트가 필요할까?...
 
 # MockMyPageAPI 설정
+```swift
 class MockMyPageAPI: MyPageAPI {
     var myPageInfoPublisher: AnyPublisher<MyPageModel, APIError>
     var myPageHistoryMetaInfoPublisher: AnyPublisher<MyPageHistoryMetaModel, APIError>
@@ -29,11 +35,11 @@ class MyPageViewBlocTests: XCTestCase {
     override func setUpWithError() throws {
         super.setUp()
         // Given: 테스트 환경 설정
-        let myPageInfoPublisher = Just(MyPageModel(/* 적절한 테스트 데이터로 초기화 */))
+        let myPageInfoPublisher = Just(MyPageModel())
             .setFailureType(to: APIError.self)
             .eraseToAnyPublisher()
         
-        let myPageHistoryMetaInfoPublisher = Just(MyPageHistoryMetaModel(/* 적절한 테스트 데이터로 초기화 */))
+        let myPageHistoryMetaInfoPublisher = Just(MyPageHistoryMetaModel())
             .setFailureType(to: APIError.self)
             .eraseToAnyPublisher()
         
@@ -61,11 +67,11 @@ class MyPageViewBlocTests: XCTestCase {
         bloc.$state
             .sink { state in
                 if state.displayProfileImgUrl != "" {
-                    expectation.fulfill()  // 예상된 상태 업데이트가 발생하면 테스트를 성공적으로 마침
+                    expectation.fulfill()
                 }
             }
             .store(in: &cancelables)
 
-        wait(for: [expectation], timeout: 5.0)  // 비동기 작업의 완료를 대기
+        wait(for: [expectation], timeout: 3.0)
     }
 }
